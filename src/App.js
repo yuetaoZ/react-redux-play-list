@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useState, useEffect } from "react";
+import Playlist from "./Playlist";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  const [playlist, setPlaylist] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch("/playlist")
+      .then((resp) => resp.json())
+      .then((data) => setPlaylist(data));
+    setLoading(false);
+  }, []);
+
+  return loading ? (
+    <div>loading...</div>
+  ) : (
+    <div className="PlaylistContainer">
+      <Playlist title="All Songs" playlist={playlist} />
+      <Playlist title="Listened" playlist={playlist} />
+      <Playlist title="Favorite" playlist={playlist} />
     </div>
   );
 }
