@@ -15,7 +15,9 @@ const Playlist = (props) => {
             <button onClick={() => props.toggleListened(item)}>
               Listened: {item.listened ? "true" : "false"}
             </button>
-            <button>Favorite: {item.favorite ? "true" : "false"}</button>
+            <button onClick={() => props.toggleFavorite(item)}>
+              Favorite: {item.favorite ? "true" : "false"}
+            </button>
           </li>
         ))}
       </ul>

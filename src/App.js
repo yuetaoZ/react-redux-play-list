@@ -2,7 +2,11 @@ import "./App.css";
 import React, { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Playlist from "./Playlist";
-import { loadPlaylistAsyncAction, toggleListenedAsyncAction } from "./actions";
+import {
+  loadPlaylistAsyncAction,
+  toggleListenedAsyncAction,
+  toggleFavoriteAsyncAction,
+} from "./actions";
 
 function App() {
   const { playlist, loading } = useSelector((state) => {
@@ -18,6 +22,10 @@ function App() {
     dispatch(toggleListenedAsyncAction(song));
   };
 
+  const toggleFavoriteAsync = (song) => {
+    dispatch(toggleFavoriteAsyncAction(song));
+  };
+
   return (
     <>
       {loading && <div>loading...</div>}
@@ -26,14 +34,19 @@ function App() {
           title="All Songs"
           playlist={playlist}
           toggleListened={toggleListenedAsync}
+          toggleFavorite={toggleFavoriteAsync}
         />
         <Playlist
           title="Listened"
           playlist={playlist.filter((song) => song.listened === true)}
+          toggleListened={toggleListenedAsync}
+          toggleFavorite={toggleFavoriteAsync}
         />
         <Playlist
           title="Favorite"
           playlist={playlist.filter((song) => song.favorite === true)}
+          toggleListened={toggleListenedAsync}
+          toggleFavorite={toggleFavoriteAsync}
         />
       </div>
     </>

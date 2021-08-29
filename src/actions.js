@@ -66,14 +66,29 @@ export const updatePlaylistSuccess = (song) => {
 export const toggleListenedAsyncAction = (song) => {
   return (dispatch) => {
     const newSong = { ...song, listened: !song.listened };
-    updatingStart();
+    dispatch(updatingStart());
     axios
       .put(`/playlist/${song.id}`, newSong)
       .then((resp) => {
         dispatch(updatePlaylistSuccess(resp.data));
       })
       .catch(() => {
-        updatingFailed();
+        dispatch(updatingFailed());
+      });
+  };
+};
+
+export const toggleFavoriteAsyncAction = (song) => {
+  return (dispatch) => {
+    const newSong = { ...song, favorite: !song.favorite };
+    dispatch(updatingStart());
+    axios
+      .put(`/playlist/${song.id}`, newSong)
+      .then((resp) => {
+        dispatch(updatePlaylistSuccess(resp.data));
+      })
+      .catch(() => {
+        dispatch(updatingFailed());
       });
   };
 };
