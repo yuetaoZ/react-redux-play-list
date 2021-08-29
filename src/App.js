@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     dispatch(loadPlaylistAsyncAction());
-  }, []);
+  }, [dispatch]);
 
   const toggleListenedAsync = (song) => {
     dispatch(toggleListenedAsyncAction(song));
