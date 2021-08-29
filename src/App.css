@@ -8,19 +8,5 @@
   height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
   background-color: skyblue;
-}
-
-.Playlist {
-  width: 280px;
-  height: 600px;
-  margin: 20px;
-  border: 1px solid black;
-}
-
-.PlaylistHeader {
-  height: 2em;
-  background-color: blue;
-  color: white;
 }

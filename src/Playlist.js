@@ -1,23 +1,50 @@
-import "./App.css";
+import "./Playlist.css";
 import React from "react";
 
 const Playlist = (props) => {
   return (
     <div className="Playlist">
       <header className="PlaylistHeader">{props.title}</header>
-      <ul>
-        {props.playlist.map((item) => (
-          <li key={item.id}>
-            {item.artist}
-            <br />
-            {item.track}
-            <br />
-            <button onClick={() => props.toggleListened(item)}>
-              Listened: {item.listened ? "true" : "false"}
-            </button>
-            <button onClick={() => props.toggleFavorite(item)}>
-              Favorite: {item.favorite ? "true" : "false"}
-            </button>
+      <ul className="PlaylistUl">
+        {props.playlist.map((item, index) => (
+          <li className="PlaylistItem" key={item.id}>
+            <div>
+              {item.artist}
+              <br />
+              {item.track}
+            </div>
+            <div>
+              {item.listened ? (
+                <span
+                  className="material-icons HeadphoneGreen"
+                  onClick={() => props.toggleListened(item)}
+                >
+                  headphones
+                </span>
+              ) : (
+                <span
+                  className="material-icons HeadphoneGrey"
+                  onClick={() => props.toggleListened(item)}
+                >
+                  headphones
+                </span>
+              )}
+              {item.favorite ? (
+                <span
+                  className="material-icons FavoriteRed"
+                  onClick={() => props.toggleFavorite(item)}
+                >
+                  favorite
+                </span>
+              ) : (
+                <span
+                  className="material-icons FavoriteGrey"
+                  onClick={() => props.toggleFavorite(item)}
+                >
+                  favorite
+                </span>
+              )}
+            </div>
           </li>
         ))}
       </ul>

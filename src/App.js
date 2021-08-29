@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Playlist from "./Playlist";
 import {
@@ -12,7 +12,8 @@ function App() {
   const { playlist, loading } = useSelector((state) => {
     return state.playlistModule;
   });
-  const dispatch = useCallback(useDispatch());
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadPlaylistAsyncAction());
