@@ -2,9 +2,8 @@ import * as Actions from "./actions";
 
 const initialState = {
   playlist: [],
-  favoriteList: [],
-  listenedList: [],
   loading: false,
+  updating: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -15,6 +14,12 @@ const reducer = (state = initialState, action) => {
         loading: true,
       };
     }
+    case Actions.LOAD_PLAYLIST_FAILED: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
     case Actions.LOAD_PLAYLIST_SUCCESS: {
       return {
         ...state,
@@ -22,42 +27,30 @@ const reducer = (state = initialState, action) => {
         loading: false,
       };
     }
-    case Actions.LOAD_PLAYLIST_FAILED: {
+    case Actions.UPDATE_PLAYLIST_START: {
       return {
         ...state,
-        loading: false,
+        updating: true,
       };
     }
-    case Actions.LOAD_PLAYLIST: {
+    case Actions.UPDATE_PLAYLIST_FAILED: {
       return {
         ...state,
-        playlist: action.payload,
+        updating: false,
       };
     }
-    case Actions.LOAD_LISTENED: {
+    case Actions.UPDATE_PLAYLIST_SUCCESS: {
+      const newPlaylist = state.playlist.map((song) => {
+        if (song.id === action.payload.id) {
+          return action.payload;
+        } else {
+          return song;
+        }
+      });
       return {
         ...state,
-        listenedList: action.payload,
-      };
-    }
-    case Actions.LOAD_FAVORITE: {
-      return {
-        ...state,
-        favoriteList: action.payload,
-      };
-    }
-    case Actions.ADD_FAVORITE: {
-      const newFavoriteList = [...state.favoriteList, action.payload];
-      return {
-        ...state,
-        favoriteList: newFavoriteList,
-      };
-    }
-    case Actions.ADD_LISTENED: {
-      const newListenedList = [...state.listenedList, action.payload];
-      return {
-        ...state,
-        listenedList: newListenedList,
+        playlist: newPlaylist,
+        updating: false,
       };
     }
     default: {

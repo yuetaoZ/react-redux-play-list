@@ -1,56 +1,25 @@
 import axios from "axios";
 
-export const LOAD_PLAYLIST = "LOAD_PLAYLIST";
-export const LOAD_LISTENED = "LOAD_LISTENED";
-export const LOAD_FAVORITE = "LOAD_FAVORITE ";
-
-export const ADD_FAVORITE = "ADD_FAVORITE";
-export const ADD_LISTENED = "ADD_LISTENED";
-
 export const LOAD_PLAYLIST_START = "LOAD_PLAYLIST_START";
-export const LOAD_PLAYLIST_SUCCESS = "LOAD_PLAYLIST_SUCCESS";
 export const LOAD_PLAYLIST_FAILED = "LOAD_PLAYLIST_FAILED";
+export const LOAD_PLAYLIST_SUCCESS = "LOAD_PLAYLIST_SUCCESS";
 
-export const loadPlaylistAction = (playlist) => {
-  return {
-    type: LOAD_PLAYLIST,
-    payload: playlist,
-  };
-};
+export const UPDATE_PLAYLIST_START = "UPDATE_PLAYLIST_START";
+export const UPDATE_PLAYLIST_FAILED = "UPDATE_PLAYLIST_FAILED";
+export const UPDATE_PLAYLIST_SUCCESS = "UPDATE_PLAYLIST_SUCCESS";
 
-export const loadListenedlistAction = (playlist) => {
-  const listenedList = playlist.filter((song) => song.listened === true);
-  return {
-    type: LOAD_LISTENED,
-    payload: listenedList,
-  };
-};
+export const TOGGLE_FAVORITE = "TOGGLE_FAVORITE";
+export const TOGGLE_LISTENED = "TOGGLE_LISTENED";
 
-export const loadFavoritelistAction = (playlist) => {
-  const favoriteList = playlist.filter((song) => song.favorite === true);
-  return {
-    type: LOAD_FAVORITE,
-    payload: favoriteList,
-  };
-};
-
-export const addFavoriteAction = (value) => {
-  return {
-    type: ADD_FAVORITE,
-    payload: value,
-  };
-};
-
-export const addListenedAction = (value) => {
-  return {
-    type: ADD_LISTENED,
-    payload: value,
-  };
-};
-
-export const loadPlaylistStart = () => {
+export const loadingStart = () => {
   return {
     type: LOAD_PLAYLIST_START,
+  };
+};
+
+export const loadingFailed = () => {
+  return {
+    type: LOAD_PLAYLIST_FAILED,
   };
 };
 
@@ -61,24 +30,50 @@ export const loadPlaylistSuccess = (playlist) => {
   };
 };
 
-export const loadPlaylistFailed = () => {
-  return {
-    type: LOAD_PLAYLIST_FAILED,
-  };
-};
-
 export const loadPlaylistAsyncAction = () => {
   return (dispatch) => {
-    dispatch(loadPlaylistStart());
+    dispatch(loadingStart());
     axios
       .get("/playlist")
       .then((resp) => {
         dispatch(loadPlaylistSuccess(resp.data));
-        dispatch(loadListenedlistAction(resp.data));
-        dispatch(loadFavoritelistAction(resp.data));
       })
       .catch(() => {
-        dispatch(loadPlaylistFailed());
+        dispatch(loadingFailed());
+      });
+  };
+};
+
+export const updatingStart = () => {
+  return {
+    type: UPDATE_PLAYLIST_START,
+  };
+};
+
+export const updatingFailed = () => {
+  return {
+    type: UPDATE_PLAYLIST_FAILED,
+  };
+};
+
+export const updatePlaylistSuccess = (song) => {
+  return {
+    type: UPDATE_PLAYLIST_SUCCESS,
+    payload: song,
+  };
+};
+
+export const toggleListenedAsyncAction = (song) => {
+  return (dispatch) => {
+    const newSong = { ...song, listened: !song.listened };
+    updatingStart();
+    axios
+      .put(`/playlist/${song.id}`, newSong)
+      .then((resp) => {
+        dispatch(updatePlaylistSuccess(resp.data));
+      })
+      .catch(() => {
+        updatingFailed();
       });
   };
 };
