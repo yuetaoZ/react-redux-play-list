@@ -1,6 +1,9 @@
 import axios from "axios";
 
 export const LOAD_PLAYLIST = "LOAD_PLAYLIST";
+export const LOAD_LISTENED = "LOAD_LISTENED";
+export const LOAD_FAVORITE = "LOAD_FAVORITE ";
+
 export const ADD_FAVORITE = "ADD_FAVORITE";
 export const ADD_LISTENED = "ADD_LISTENED";
 
@@ -12,6 +15,22 @@ export const loadPlaylistAction = (playlist) => {
   return {
     type: LOAD_PLAYLIST,
     payload: playlist,
+  };
+};
+
+export const loadListenedlistAction = (playlist) => {
+  const listenedList = playlist.filter((song) => song.listened === true);
+  return {
+    type: LOAD_LISTENED,
+    payload: listenedList,
+  };
+};
+
+export const loadFavoritelistAction = (playlist) => {
+  const favoriteList = playlist.filter((song) => song.favorite === true);
+  return {
+    type: LOAD_FAVORITE,
+    payload: favoriteList,
   };
 };
 
@@ -55,6 +74,8 @@ export const loadPlaylistAsyncAction = () => {
       .get("/playlist")
       .then((resp) => {
         dispatch(loadPlaylistSuccess(resp.data));
+        dispatch(loadListenedlistAction(resp.data));
+        dispatch(loadFavoritelistAction(resp.data));
       })
       .catch(() => {
         dispatch(loadPlaylistFailed());

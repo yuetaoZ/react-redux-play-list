@@ -6,9 +6,11 @@ import { loadPlaylistAsyncAction } from "./actions";
 
 function App() {
   const dispatch = useDispatch();
-  const { playlist, loading } = useSelector((state) => {
-    return state.playlistModule;
-  });
+  const { playlist, listenedList, favoriteList, loading } = useSelector(
+    (state) => {
+      return state.playlistModule;
+    }
+  );
 
   useEffect(() => {
     dispatch(loadPlaylistAsyncAction());
@@ -19,8 +21,8 @@ function App() {
       {loading && <div>loading...</div>}
       <div className="PlaylistContainer">
         <Playlist title="All Songs" playlist={playlist} />
-        <Playlist title="Listened" playlist={playlist} />
-        <Playlist title="Favorite" playlist={playlist} />
+        <Playlist title="Listened" playlist={listenedList} />
+        <Playlist title="Favorite" playlist={favoriteList} />
       </div>
     </>
   );

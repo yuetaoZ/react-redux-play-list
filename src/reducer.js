@@ -34,6 +34,18 @@ const reducer = (state = initialState, action) => {
         playlist: action.payload,
       };
     }
+    case Actions.LOAD_LISTENED: {
+      return {
+        ...state,
+        listenedList: action.payload,
+      };
+    }
+    case Actions.LOAD_FAVORITE: {
+      return {
+        ...state,
+        favoriteList: action.payload,
+      };
+    }
     case Actions.ADD_FAVORITE: {
       const newFavoriteList = [...state.favoriteList, action.payload];
       return {
