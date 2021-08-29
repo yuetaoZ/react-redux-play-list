@@ -1,17 +1,24 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Playlist from "./Playlist";
+import { loadPlaylistAction } from "./actions";
 
 function App() {
-  const [playlist, setPlaylist] = useState([]);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const playlist = useSelector((state) => {
+    return state.playlistModule.playlist;
+  });
 
   useEffect(() => {
     setLoading(true);
     fetch("/playlist")
       .then((resp) => resp.json())
-      .then((data) => setPlaylist(data));
-    setLoading(false);
+      .then((data) => {
+        setLoading(false);
+        dispatch(loadPlaylistAction(data));
+      });
   }, []);
 
   return loading ? (
