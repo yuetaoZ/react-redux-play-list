@@ -7,6 +7,7 @@ import {
   toggleListenedAsyncAction,
   toggleFavoriteAsyncAction,
 } from "./actions";
+import store from "./store";
 
 function App() {
   const { playlist, loading } = useSelector((state) => {
@@ -16,8 +17,8 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadPlaylistAsyncAction());
-  }, [dispatch]);
+    store.dispatch(loadPlaylistAsyncAction());
+  }, []);
 
   const toggleListenedAsync = (song) => {
     dispatch(toggleListenedAsyncAction(song));
